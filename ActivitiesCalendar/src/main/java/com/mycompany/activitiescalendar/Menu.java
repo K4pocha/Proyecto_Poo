@@ -8,7 +8,9 @@ public class Menu {
 
     public static void menu() {
         int menu;
+        int aux;
         String data;
+        String auxData;
         Scanner reader = new Scanner(System.in);
         Map<String, Date> dateMap = new HashMap();
 
@@ -65,8 +67,8 @@ public class Menu {
                     String Name = reader.nextLine();
 
                     for (Date date : dateMap.values()) {
-                        if (date.buscarEvento(Name) != null) {
-                            System.out.println(date.buscarEvento(Name));
+                        if (date.searchActivity(Name) != null) {
+                            System.out.println(date.searchActivity(Name));
                             break;
                         }
                     }
@@ -95,7 +97,66 @@ public class Menu {
                     break;
 
                 case 4:
-                    System.out.println("No implementado");
+                    System.out.println("Ingrese la fecha que desea modificar");
+                    dateSelected = reader.nextLine();
+                    if (dateMap.get(dateSelected) != null) {
+                        //newDate = dateMap.get(dateSelected);
+                        System.out.println("--------------------------------");
+                        System.out.println("Eventos en la fecha: ");
+                        dateMap.get(dateSelected).printDate(dateSelected);
+
+                        System.out.println("Ingrese nombre del evento que quiere modificar: ");
+                        data = reader.nextLine();
+                                           
+                        System.out.println("--------------------------------");
+                        System.out.println("MODIFICAR:");
+                        System.out.println("1. Nombre");
+                        System.out.println("2. Fecha");
+                        System.out.println("3. Estado");
+                        System.out.println("4. Descripcion");
+                        System.out.println("5. Categoria");
+                        System.out.println("0. Volver al menú");
+                        System.out.println("--------------------------------");
+                        aux = reader.nextInt();
+                        reader.nextLine();
+                        
+                        switch (aux) {
+                            default:
+                                System.out.println("Porfavor ingrese un numero valido");
+                            case 0: return;
+
+                            case 1: //MODIFICAR NOMBRE ACTIVIDAD 
+                                System.out.println("Ingrese el nuevo nombre del evento: ");
+                                auxData = reader.nextLine();
+                                dateMap.get(dateSelected).editActivityName(data, auxData);
+                                break;
+                            case 2: //MODIFICAR FECHA (Mapa y evento)
+                                System.out.println("Ingrese la nueva fecha del evento: ");
+                                auxData = reader.nextLine();                             
+                                dateMap.get(dateSelected).editActivityDate(data, auxData);
+                                //Como actualizo el mapa, si ya elimine la fecha de la lista ,....
+                             
+                                break;
+                            case 3: //MODIFICAR ESTADO
+                                System.out.println("Ingrese el nuevo estado del evento: ");
+                                auxData = reader.nextLine();
+                                dateMap.get(dateSelected).editActivityState(data, auxData);
+                                break;
+                            case 4: //MODIFICAR DESCRIOCION
+                                System.out.println("Ingrese la nueva descripcion del evento: ");
+                                auxData = reader.nextLine();
+                                dateMap.get(dateSelected).editActivityDescription(data, auxData);
+                                break;
+                            case 5: //MODIFICAR CATEGORIA
+                                System.out.println("Ingrese la nueva categoria del evento: ");
+                                auxData = reader.nextLine();
+                                dateMap.get(dateSelected).editActivityCategory(data, auxData);
+                                break;
+                            
+
+                        }
+                    }
+                    //System.out.println("ERROR");
                     break;
 
                 case 5:
@@ -109,7 +170,7 @@ public class Menu {
 
                         System.out.println("Ingrese nombre del evento que quiere eliminar: ");
                         data = reader.nextLine();
-                        dateMap.get(dateSelected).eliminarActivity(data);
+                        dateMap.get(dateSelected).deleteActivity(data);
                     } else {
                         System.out.println("La fecha ingresada es incorrecta o no existen eventos asociados");
                     }

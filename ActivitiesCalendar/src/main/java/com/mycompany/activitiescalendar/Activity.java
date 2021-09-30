@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.activitiescalendar;
 
 /**
@@ -69,7 +64,6 @@ public class Activity {
         this.date = date;
     }
     
-    //METODS
     public Activity SetActivity (String activityName, String activityDescription, String activityCategory, String activityState, String activityDate, Activity newActivity )
     {
         newActivity.name = activityName;
@@ -115,20 +109,6 @@ public class Activity {
         System.out.print ("Estado: ");
         System.out.println (this.state);
     }
-            
-    public void editActivity (int menu) {
-        switch (menu) {
-            
-            case 0: return;
-            
-            case 1: //MODIFICAR NOMBRE ACTIVIDAD  
-            case 2: //MODIFICAR DESCRIPCION 
-            case 3: //MODIFICAR FECHA (PAJA)
-            case 4: //MODIFICAR CATEGORIA
-            case 5: //MODIFICAR ESTADO
-            
-        }
-    }
 
     @Override
     public String toString() {
@@ -145,4 +125,5 @@ public class Activity {
     public String datos(){
         return "Nombre: "+ name + "\nDescripcion: "+ description +"\nCategoria: "+ category +"\nEstado: "+ state;
     }
+    
 }

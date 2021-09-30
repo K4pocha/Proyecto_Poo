@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.activitiescalendar;
 
 import java.util.*;
@@ -93,25 +89,95 @@ public class Date {
     }
 
     //evento buscar
-    public String buscarEvento(String nombre) {
+    public String searchActivity(String name) {
         for (Activity activity : list) {
-            if (activity.getName().equalsIgnoreCase(nombre)) {
+            if (activity.getName().equalsIgnoreCase(name)) {
                 return activity.toString();
             }
         }
         return null;
     }
 
-    public void eliminarActivity(String nombre) {
+    public void deleteActivity(String name) {
         for (int i = 0; i < list.size(); i++) {
             Activity activity = list.get(i);
-            if (activity.getName().equalsIgnoreCase(nombre)) {
+            if (activity.getName().equalsIgnoreCase(name)) {
                 list.remove(i);
-                System.out.println("Evento: " + nombre + " eliminado del calendario exitosamente");
+                System.out.println("Evento: " + name + " eliminado de la fecha exitosamente");
                 return;
             }
         }
         System.out.println("No existe evento en esta fecha con el nombre ingresado.");
     }
 
+    
+    
+    //¿Como encapsulo para editar en actividad y no en date?
+    public Activity editActivityName ( String name, String newName) {
+        
+        for (int i = 0; i < list.size(); i++) {
+            Activity activity = list.get(i);
+            if (activity.getName().equalsIgnoreCase(name)) {
+                activity.setName(newName);
+                System.out.println("Evento: " + name + " renombrado exitosamente como " + newName);
+                return activity;
+            }      
+        }
+        return null;
+    }
+     
+    public Activity editActivityState(String data, String auxData) {
+        
+        for (int i = 0; i < list.size(); i++) {
+            Activity activity = list.get(i);
+            if (activity.getName().equalsIgnoreCase(data)) {
+                activity.setState(auxData);
+                System.out.println("Evento: " + data + " ahora tiene estado " + auxData);
+                return activity;
+            }      
+        }
+        return null;
+    }
+    
+    public Activity  editActivityDescription(String data, String auxData) {
+        
+        for (int i = 0; i < list.size(); i++) {
+            Activity activity = list.get(i);
+            if (activity.getName().equalsIgnoreCase(data)) {
+                activity.setDescription(auxData);
+                System.out.println("Evento: " + data + " ahora tiene descripción " + auxData);
+                return activity;
+            }      
+        }
+        return null;
+    }
+    
+    
+    public Activity  editActivityCategory(String data,String auxData) {
+        
+        for (int i = 0; i < list.size(); i++) {
+            Activity activity = list.get(i);
+            if (activity.getName().equalsIgnoreCase(data)) {
+                activity.setCategory(auxData);
+                System.out.println("Evento: " + data + " ahora tiene categoria " + auxData);
+                return activity;
+            }      
+        }
+        return null;
+    }
+    
+    
+    public Activity  editActivityDate(String data, String auxData) {
+        
+        for (int i = 0; i < list.size(); i++) {
+            Activity activity = list.get(i);
+            if (activity.getName().equalsIgnoreCase(data)) {
+                activity.setDate(auxData);
+                System.out.println("Evento: " + data + " ahora tiene fecha " + auxData);
+                return activity;
+            }      
+        }
+        return null;
+    }
+    
 }
