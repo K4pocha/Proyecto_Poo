@@ -1,5 +1,7 @@
 package com.mycompany.activitiescalendar;
 
+import java.io.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -7,8 +9,7 @@ import java.util.Scanner;
 public class Menu {
 
     public static void menu() {
-        int menu;
-        int aux;
+        int menu,i,j,aux;
         String data;
         String auxData;
         Scanner reader = new Scanner(System.in);
@@ -19,13 +20,15 @@ public class Menu {
             System.out.println("MENÚ:");
             System.out.println("1. Agregar evento");
             System.out.println("2. Buscar evento por nombre");
-            System.out.println("3. Mostrar eventos de la fecha");
-            System.out.println("4. Modificar evento");
-            System.out.println("5. Elminiar evento");
+            System.out.println("3. Mostrar evento mas cercano");
+            System.out.println("4. Mostrar eventos de la fecha");
+            System.out.println("5. Mostrar eventos del mes");
+            System.out.println("6. Modificar evento");
+            System.out.println("7. Eliminar evento");
+            System.out.println("8. Generar reporte de eventos");
             System.out.println("0. Salir");
             System.out.println("--------------------------------");
 
-            //list = new ArrayList();
             menu = reader.nextInt();
             reader.nextLine();
 
@@ -36,7 +39,7 @@ public class Menu {
 
                 case 1: //AGREGAR ACTIVIDAD
                     //Activity newActivity = new Activity();
-                    System.out.println("Ingrese fecha de la actividad (formato: dd/mm): ");
+                    System.out.println("Ingrese fecha de la actividad (formato: dd-mm): ");
                     String selectedDate = reader.nextLine();
 
                     System.out.println("Ingrese el titulo de la actividad: ");
@@ -51,7 +54,9 @@ public class Menu {
 
                     Activity newActivity = new Activity(activityName, activityDescription, activityCategory, activityState, selectedDate);
                     //newActivity.SetActivity(activityName, activityDescription, activityCategory, activityState, selectedDate, newActivity);
-
+                    
+                    Activity newActivityCsv = new Activity();
+                    newActivityCsv.addActivityCsv(newActivityCsv);
                     //newDate.printDate();
                     if (dateMap.get(selectedDate) == null) {
                         Date newDate = new Date(selectedDate);
@@ -74,29 +79,102 @@ public class Menu {
                     }
 
                     break;
+                    
                 case 3:
+                    //LocalDate actualDate = LocalDate.now(); Como casteo de localdate a string, hay que cambiar todo el codigo para empezar a usar localdate?
+                    boolean flag = false;
+                    System.out.println("Ingrese la fecha actual (dd-mm)");
+                    String dateNow = reader.nextLine();
+                    System.out.println("La actividad mas cercana a la fecha " + dateNow + " es: ");
+                    String[] auxDateNow = dateNow.split("-");
+                    
+                    
+                    if (dateMap.get(dateNow) != null) {
+                        dateMap.get(dateNow).printDate(dateNow);
+                        break;
+                    } else {
+                        int aux2 = Integer.parseInt(auxDateNow[1]); //Mes
+                        int aux1 = Integer.parseInt(auxDateNow[0]); //Dia
+                        
+                        for (i = aux1; i <= 31; i++) {   
+                            String day = Integer.toString(i);
+                            String month = Integer.toString(aux2);
+                            //String auxDate = new StringBuilder(day).append("-").append(aux2).toString();
+                            if (i < 10){  
+                                String auxDay = new StringBuilder("0").append(day).toString();
+                                String auxDate = new StringBuilder(auxDay).append("-").append(month).toString();
+                                if(dateMap.get(auxDate) != null ) {
+                                    dateMap.get(auxDate).printDate(auxDate);
+                                    flag = true;
+                                    break;
+                                }
+                            } else if (i > 10) {    
+                                String auxDate = new StringBuilder(day).append("-").append(aux2).toString();
+                                if(dateMap.get(auxDate) != null ) {
+                                    dateMap.get(auxDate).printDate(auxDate);
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (flag) break; //Casos anteriores, break solo sale del ciclo pero no termina la ejecucion del case 3, por lo que seguira buscando eventos en meses siguientes       
+                        for (i = 1; i <= 31; i++) {
+                            for (j = aux2+1; j<= 12; j++){ 
+                               
+                                String day = Integer.toString(i);
+                                String month = Integer.toString(j);
+                                if (i < 10){  
+                                    String auxDay = new StringBuilder("0").append(day).toString();
+                                    String auxDate = new StringBuilder(auxDay).append("-").append(month).toString();
+                                    if(dateMap.get(auxDate) != null ) {
+                                        dateMap.get(auxDate).printDate(auxDate);
+                                        break;
+                                    }
+                                } else if (i > 10) {    
+                                    String auxDate = new StringBuilder(day).append("-").append(month).toString();
+                                    if(dateMap.get(auxDate) != null ) {
+                                        dateMap.get(auxDate).printDate(auxDate);
+                                        break;
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
+                    }
+                            
+                    System.out.println("No hay fechas cercanas con actividades");
+                    break;
+                    
+                case 4:
                     System.out.println("Ingrese la fecha que desea consultar: ");
                     String dateSelected = reader.nextLine();
                     System.out.println("--------------------------------");
                     if (dateMap.get(dateSelected) != null) {
 
                         dateMap.get(dateSelected).printDate(dateSelected);
-                        //Date newDate = dateMap.get(dateSelected);
-                        //newDate.printDate(dateSelected);
-                        //System.out.println("--------------------------------");
+
 
                     } else {
                         System.out.println("Esta fecha no tiene eventos a realizar.");
                     }
-                    /**
-                     * System.out.println("¿Desea consultar otra fecha? ");
-                     * System.out.println("1. Consultar otra fecha ");
-                     * System.out.println("0. Volver al menú "); if (menu == 0)
-                     * break; *
-                     */
+                    break;
+                    
+                case 5:
+                    System.out.println("Ingrese el mes que desea consultar (Numero del mes): ");
+                    String searchedMonth = reader.nextLine();
+                    for (i = 1; i <= 31; i++)
+                    {
+                        String s = Integer.toString(i);
+                        String finalDate = new StringBuilder(s).append("-").append(searchedMonth).toString();
+                        if (dateMap.get(finalDate) != null)
+                        {
+                            dateMap.get(finalDate).printDate(finalDate);
+                        }
+                    }
                     break;
 
-                case 4:
+                case 6:
                     System.out.println("Ingrese la fecha que desea modificar");
                     dateSelected = reader.nextLine();
                     if (dateMap.get(dateSelected) != null) {
@@ -142,7 +220,7 @@ public class Menu {
                                 auxData = reader.nextLine();
                                 dateMap.get(dateSelected).editActivityState(data, auxData);
                                 break;
-                            case 4: //MODIFICAR DESCRIOCION
+                            case 4: //MODIFICAR DESCRIPCION
                                 System.out.println("Ingrese la nueva descripcion del evento: ");
                                 auxData = reader.nextLine();
                                 dateMap.get(dateSelected).editActivityDescription(data, auxData);
@@ -152,14 +230,12 @@ public class Menu {
                                 auxData = reader.nextLine();
                                 dateMap.get(dateSelected).editActivityCategory(data, auxData);
                                 break;
-                            
-
                         }
                     }
                     //System.out.println("ERROR");
                     break;
 
-                case 5:
+                case 7:
                     System.out.println("Ingrese la fecha del evento que quiere eliminar");
                     dateSelected = reader.nextLine();
                     if (dateMap.get(dateSelected) != null) {
@@ -175,7 +251,16 @@ public class Menu {
                         System.out.println("La fecha ingresada es incorrecta o no existen eventos asociados");
                     }
                     break;
-
+                case 8:
+                    Activity auxCsv = new Activity();
+                    PrintWriter writer = null;
+                    auxCsv.printCsv();
+                    auxCsv.createCsv(writer);
+                    System.out.println("********************************");
+                    System.out.println("Reporte de eventos generado!");
+                    System.out.println("********************************");
+                    break;
+                    
                 default:
                     System.out.println("Porfavor, ingrese un número del menu válido.");
                     break;

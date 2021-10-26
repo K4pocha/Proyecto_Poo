@@ -2,6 +2,7 @@
 package com.mycompany.activitiescalendar;
 
 import java.util.*;
+import java.time.*;
 
 /**
  *
@@ -152,7 +153,6 @@ public class Date {
         return null;
     }
     
-    
     public Activity  editActivityCategory(String data,String auxData) {
         
         for (int i = 0; i < list.size(); i++) {
@@ -166,7 +166,6 @@ public class Date {
         return null;
     }
     
-    
     public Activity  editActivityDate(String data, String auxData) {
         
         for (int i = 0; i < list.size(); i++) {
@@ -178,6 +177,29 @@ public class Date {
             }      
         }
         return null;
+    }
+    
+    /** public void printMonthActivities (String  monthYearSearched)
+    {
+        for (int i = 0; i < list.size(); i++) {
+            Activity activity = list.get(i);
+            String activityDate = activity.getDate();
+            
+            String[] activityDayMonthYear = activityDate.split("/");
+            String[] auxMonthYear = monthYearSearched.split("/");
+            
+             System.out.println("Dias con actividades a realizar en el mes " + monthYearSearched + "son: ");
+            
+            if (auxMonthYear[0].equalsIgnoreCase(activityDayMonthYear[1]) && auxMonthYear[1].equalsIgnoreCase(activityDayMonthYear[2])) {
+               
+                activity.printActivity();
+            }      
+        }
+    } **/ 
+    
+    public void printMonthActivities(String month)
+    {
+        
     }
     
 }

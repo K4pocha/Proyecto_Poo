@@ -1,5 +1,8 @@
 package com.mycompany.activitiescalendar;
 
+import java.io.*;
+import java.util.*;
+
 /**
  *
  * @author k4po
@@ -10,6 +13,7 @@ public class Activity {
     private String category;    //categoria
     private String state;  //
     private String date;
+    private ArrayList<Activity> activitiesCsv;
 
     //CONSTRUCTOR
     public Activity(String name, String description, String category, String state, String date) {
@@ -20,7 +24,8 @@ public class Activity {
         this.date = date;
     }
     
-    public Activity () {
+    public Activity() {
+        this.activitiesCsv = new ArrayList();
     }
     
     //GETTER AND SETTER
@@ -62,6 +67,14 @@ public class Activity {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    
+    public void setActivitiesCsv(ArrayList<Activity> activitiesCsv) {
+        this.activitiesCsv = activitiesCsv;
+    }
+    
+    public ArrayList<Activity> getActivitiesCsv() {
+        return activitiesCsv;
     }
     
     public Activity SetActivity (String activityName, String activityDescription, String activityCategory, String activityState, String activityDate, Activity newActivity )
@@ -126,4 +139,34 @@ public class Activity {
         return "Nombre: "+ name + "\nDescripcion: "+ description +"\nCategoria: "+ category +"\nEstado: "+ state;
     }
     
+    public void addActivityCsv(Activity activity) {
+        this.activitiesCsv.add(activity);
+    }
+      
+    public void printCsv() {
+        int size = this.activitiesCsv.size();
+        for (int i = 0; i < size; i++) {
+            this.activitiesCsv.get(i).printCsv();
+        }
+    }
+    
+    public void createCsv (PrintWriter writer){
+        File csvFile = new File("Reporte Eventos.csv");
+         
+        try{
+            writer = new PrintWriter(csvFile);
+            int size = activitiesCsv.size();
+            if (size != 0){   
+                for(int i=0; i< activitiesCsv.size();i++){
+                    writer.println("Fecha:" + activitiesCsv.get(i).getDate());
+                    writer.println("Nombre:" + activitiesCsv.get(i).getName());
+                    writer.println("Descripcion:" + activitiesCsv.get(i).getDescription());
+                    writer.println("Categoria:" + activitiesCsv.get(i).getCategory());
+                    writer.println("Estado:" + activitiesCsv.get(i).getState());
+                }
+            }
+        }catch(FileNotFoundException ex){
+            System.err.println(ex);
+        }
+    }
 }
